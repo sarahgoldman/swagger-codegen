@@ -1,7 +1,6 @@
 package io.swagger.model;
 
 import io.swagger.annotations.ApiModel;
-import javax.validation.constraints.*;
 
 import io.swagger.annotations.ApiModelProperty;
 import javax.xml.bind.annotation.XmlElement;
@@ -39,16 +38,9 @@ public class User  {
   public Long getId() {
     return id;
   }
-
   public void setId(Long id) {
     this.id = id;
   }
-
-  public User id(Long id) {
-    this.id = id;
-    return this;
-  }
-
  /**
    * Get username
    * @return username
@@ -56,16 +48,9 @@ public class User  {
   public String getUsername() {
     return username;
   }
-
   public void setUsername(String username) {
     this.username = username;
   }
-
-  public User username(String username) {
-    this.username = username;
-    return this;
-  }
-
  /**
    * Get firstName
    * @return firstName
@@ -73,16 +58,9 @@ public class User  {
   public String getFirstName() {
     return firstName;
   }
-
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
-
-  public User firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
  /**
    * Get lastName
    * @return lastName
@@ -90,16 +68,9 @@ public class User  {
   public String getLastName() {
     return lastName;
   }
-
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
-
-  public User lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
  /**
    * Get email
    * @return email
@@ -107,16 +78,9 @@ public class User  {
   public String getEmail() {
     return email;
   }
-
   public void setEmail(String email) {
     this.email = email;
   }
-
-  public User email(String email) {
-    this.email = email;
-    return this;
-  }
-
  /**
    * Get password
    * @return password
@@ -124,16 +88,9 @@ public class User  {
   public String getPassword() {
     return password;
   }
-
   public void setPassword(String password) {
     this.password = password;
   }
-
-  public User password(String password) {
-    this.password = password;
-    return this;
-  }
-
  /**
    * Get phone
    * @return phone
@@ -141,16 +98,9 @@ public class User  {
   public String getPhone() {
     return phone;
   }
-
   public void setPhone(String phone) {
     this.phone = phone;
   }
-
-  public User phone(String phone) {
-    this.phone = phone;
-    return this;
-  }
-
  /**
    * User Status
    * @return userStatus
@@ -158,16 +108,9 @@ public class User  {
   public Integer getUserStatus() {
     return userStatus;
   }
-
   public void setUserStatus(Integer userStatus) {
     this.userStatus = userStatus;
   }
-
-  public User userStatus(Integer userStatus) {
-    this.userStatus = userStatus;
-    return this;
-  }
-
 
   @Override
   public String toString() {
@@ -190,7 +133,7 @@ public class User  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(java.lang.Object o) {
+  private static String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

@@ -7,13 +7,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 
 
 
 
-
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaInflectorServerCodegen", date = "2016-08-20T17:24:26.037+08:00")
 public class FormatTest   {
   @JsonProperty("integer")
   private Integer integer = null;
@@ -49,14 +48,14 @@ public class FormatTest   {
   private Date dateTime = null;
 
   @JsonProperty("uuid")
-  private UUID uuid = null;
+  private String uuid = null;
 
   @JsonProperty("password")
   private String password = null;
 
   /**
-   * minimum: 10
-   * maximum: 100
+   * minimum: 10.0
+   * maximum: 100.0
    **/
   public FormatTest integer(Integer integer) {
     this.integer = integer;
@@ -74,8 +73,8 @@ public class FormatTest   {
   }
 
   /**
-   * minimum: 20
-   * maximum: 200
+   * minimum: 20.0
+   * maximum: 200.0
    **/
   public FormatTest int32(Integer int32) {
     this.int32 = int32;
@@ -253,7 +252,7 @@ public class FormatTest   {
 
   /**
    **/
-  public FormatTest uuid(UUID uuid) {
+  public FormatTest uuid(String uuid) {
     this.uuid = uuid;
     return this;
   }
@@ -261,10 +260,10 @@ public class FormatTest   {
   
   @ApiModelProperty(example = "null", value = "")
   @JsonProperty("uuid")
-  public UUID getUuid() {
+  public String getUuid() {
     return uuid;
   }
-  public void setUuid(UUID uuid) {
+  public void setUuid(String uuid) {
     this.uuid = uuid;
   }
 
@@ -287,7 +286,7 @@ public class FormatTest   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -341,7 +340,7 @@ public class FormatTest   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

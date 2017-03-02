@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.model.Category;
 import io.swagger.model.Tag;
 import java.util.List;
-import javax.validation.constraints.*;
+
 import io.swagger.annotations.*;
 
 @ApiModel(description="A pet for sale in the pet store")
@@ -75,7 +75,6 @@ public class Pet   {
   
   @ApiModelProperty(example = "doggie", required = true, value = "")
   @JsonProperty("name")
-  @NotNull
   public String getName() {
     return name;
   }
@@ -88,7 +87,6 @@ public class Pet   {
   
   @ApiModelProperty(example = "null", required = true, value = "")
   @JsonProperty("photoUrls")
-  @NotNull
   public List<String> getPhotoUrls() {
     return photoUrls;
   }
@@ -123,7 +121,7 @@ public class Pet   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -163,7 +161,7 @@ public class Pet   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

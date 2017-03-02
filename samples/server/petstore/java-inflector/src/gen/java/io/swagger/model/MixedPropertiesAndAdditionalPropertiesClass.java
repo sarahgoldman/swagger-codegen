@@ -10,16 +10,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 
 
 
-
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaInflectorServerCodegen", date = "2016-08-20T17:24:26.037+08:00")
 public class MixedPropertiesAndAdditionalPropertiesClass   {
   @JsonProperty("uuid")
-  private UUID uuid = null;
+  private String uuid = null;
 
   @JsonProperty("dateTime")
   private Date dateTime = null;
@@ -29,7 +28,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass   {
 
   /**
    **/
-  public MixedPropertiesAndAdditionalPropertiesClass uuid(UUID uuid) {
+  public MixedPropertiesAndAdditionalPropertiesClass uuid(String uuid) {
     this.uuid = uuid;
     return this;
   }
@@ -37,10 +36,10 @@ public class MixedPropertiesAndAdditionalPropertiesClass   {
   
   @ApiModelProperty(example = "null", value = "")
   @JsonProperty("uuid")
-  public UUID getUuid() {
+  public String getUuid() {
     return uuid;
   }
-  public void setUuid(UUID uuid) {
+  public void setUuid(String uuid) {
     this.uuid = uuid;
   }
 
@@ -80,7 +79,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -114,7 +113,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

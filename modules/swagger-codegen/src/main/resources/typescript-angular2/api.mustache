@@ -41,14 +41,10 @@ export class {{classname}} {
      * {{notes}}
      {{#allParams}}* @param {{paramName}} {{description}}
      {{/allParams}}*/
-    public {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}extraHttpRequestParams?: any): Observable<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}{}{{/returnType}}> {
+    public {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}extraHttpRequestParams?: any): Observable<Response> {
         return this.{{nickname}}WithHttpInfo({{#allParams}}{{paramName}}, {{/allParams}}extraHttpRequestParams)
             .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
+                return response;
             });
     }
 

@@ -67,7 +67,7 @@ The OpenAPI Specification has undergone 3 revisions since initial creation in 20
 Swagger Codegen Version    | Release Date | OpenAPI Spec compatibility | Notes
 -------------------------- | ------------ | -------------------------- | -----
 2.3.0 (upcoming minor release) | TBD   | 1.0, 1.1, 1.2, 2.0   | Minor release with breaking changes
-2.2.2 | 2017-03-01   | 1.0, 1.1, 1.2, 2.0   | [tag v2.2.2](https://github.com/swagger-api/swagger-codegen/tree/v2.2.2)
+2.2.2 (upcoming patch release) | TBD   | 1.0, 1.1, 1.2, 2.0   | Patch release (without breaking changes)
 2.2.1 (**current stable**) | 2016-08-07   | 1.0, 1.1, 1.2, 2.0   | [tag v2.2.1](https://github.com/swagger-api/swagger-codegen/tree/v2.2.1)
 2.1.6 | 2016-04-06   | 1.0, 1.1, 1.2, 2.0   | [tag v2.1.6](https://github.com/swagger-api/swagger-codegen/tree/v2.1.6)
 2.0.17                     | 2014-08-22   | 1.1, 1.2             | [tag v2.0.17](https://github.com/swagger-api/swagger-codegen/tree/v2.0.17)
@@ -1007,7 +1007,6 @@ Here is a list of template creators:
    * JAX-RS RestEasy: @chameleon82
    * JAX-RS CXF: @hiveship
    * JAX-RS CXF (CDI): @nickcmaynard
-   * JAX-RS RestEasy (JBoss EAP): @jfiala
    * PHP Lumen: @abcsum
    * PHP Slim: @jfastnacht
    * PHP Zend Expressive (with Path Handler): @Articus
@@ -1076,4 +1075,3 @@ limitations under the License.
 
 ---
 <img src="http://swagger.io/wp-content/uploads/2016/02/logo.jpg"/>
-

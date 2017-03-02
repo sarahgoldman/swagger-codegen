@@ -25,6 +25,11 @@ import java.util.concurrent.Callable;
 {{#useBeanValidation}}
 import javax.validation.constraints.*;
 {{/useBeanValidation}}
+/**
+ * Default implementation for {{{baseName}}} API
+ *
+ * {{#versionDescription}}@version {{versionDescription}}{{/versionDescription}}
+ */
 {{>generatedAnnotation}}
 @Controller
 {{#operations}}
@@ -41,11 +46,11 @@ public class {{classname}}Controller implements {{classname}} {
     public {{#async}}Callable<{{/async}}ResponseEntity<{{>returnTypes}}>{{#async}}>{{/async}} {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},
         {{/hasMore}}{{/allParams}}) {
         // do some magic!{{^isDelegate}}{{^async}}
-        return new ResponseEntity<{{>returnTypes}}>(HttpStatus.OK);{{/async}}{{#async}}
+        return new ResponseEntity<{{>returnTypes}}>(HttpStatus.NOT_IMPLEMENTED);{{/async}}{{#async}}
         return new Callable<ResponseEntity<{{>returnTypes}}>>() {
             @Override
             public ResponseEntity<{{>returnTypes}}> call() throws Exception {
-                return new ResponseEntity<{{>returnTypes}}>(HttpStatus.OK);
+                return new ResponseEntity<{{>returnTypes}}>(HttpStatus.NOT_IMPLEMENTED);
             }
         };{{/async}}{{/isDelegate}}{{#isDelegate}}
         return delegate.{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});{{/isDelegate}}

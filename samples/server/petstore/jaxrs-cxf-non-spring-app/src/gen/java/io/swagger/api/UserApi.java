@@ -14,8 +14,6 @@ import org.apache.cxf.jaxrs.ext.multipart.*;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.jaxrs.PATCH;
-import javax.validation.constraints.*;
 
 @Path("/")
 @Api(value = "/", description = "")
@@ -55,7 +53,7 @@ public interface UserApi  {
     @Path("/user/login")
     @Produces({ "application/xml", "application/json" })
     @ApiOperation(value = "Logs user into the system", tags={ "user",  })
-    public String loginUser(@QueryParam("username") @NotNull String username, @QueryParam("password") @NotNull String password);
+    public String loginUser(@QueryParam("username")String username, @QueryParam("password")String password);
 
     @GET
     @Path("/user/logout")

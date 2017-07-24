@@ -57,159 +57,245 @@ export class {{classname}} {
      {{#allParams}}* @param {{paramName}} {{description}}
      {{/allParams}}*/
     public {{nickname}}WithHttpInfo({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + `{{path}}`;
+        let path = this.basePath + `{{path}}`;
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-{{#hasFormParams}}
-        let formParams = new URLSearchParams();
+        {{#allParams}}
+            {{#required}}
+            // verify required parameter '{{paramName}}' is not null or undefined
+            if ({{paramName}} === null || {{paramName}} === undefined) {
+                throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
+            }
+            {{/required}}
+        {{/allParams}}
 
-{{/hasFormParams}}
-{{#allParams}}
-{{#required}}
-        // verify required parameter '{{paramName}}' is not null or undefined
-        if ({{paramName}} === null || {{paramName}} === undefined) {
-            throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
-        }
-{{/required}}
-{{/allParams}}
-{{#queryParams}}
-        {{#isListContainer}}
-        if ({{paramName}}) {
-        {{#isCollectionFormatMulti}}
-            {{paramName}}.forEach((element) => {
-                queryParameters.append('{{baseName}}', <any>element);
-            })
-        {{/isCollectionFormatMulti}}
-        {{^isCollectionFormatMulti}}
-            queryParameters.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
-        {{/isCollectionFormatMulti}}
-        }
-        {{/isListContainer}}
-        {{^isListContainer}}
-        if ({{paramName}} !== undefined) {
-            {{#isDateTime}}
-                queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
-            {{/isDateTime}}
-            {{^isDateTime}}
-                {{#isDate}}
-                    queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
-                {{/isDate}}
-                {{^isDate}}
-                    queryParameters.set('{{baseName}}', <any>{{paramName}});
-                {{/isDate}}
-            {{/isDateTime}}
-        }
-        {{/isListContainer}}
+        {{#hasFormParams}}
+            return Observable.create(observer => {
+                var formParams: FormData = new FormData();
+                var xhr: XMLHttpRequest = new XMLHttpRequest();
 
-{{/queryParams}}
-{{#headerParams}}
-        {{#isListContainer}}
-        if ({{paramName}}) {
-            headers.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
-        }
-        {{/isListContainer}}
-        {{^isListContainer}}
-        headers.set('{{baseName}}', String({{paramName}}));
-        {{/isListContainer}}
+                {{#formParams}}
+                    {{#isListContainer}}
+                        if ({{paramName}}) {
+                        {{#isCollectionFormatMulti}}
+                            {{paramName}}.forEach((element) => {
+                                formParams.append('{{baseName}}', <any>element);
+                            })
+                        {{/isCollectionFormatMulti}}
+                        {{^isCollectionFormatMulti}}
+                            formParams.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                        {{/isCollectionFormatMulti}}
+                        }
+                    {{/isListContainer}}
+                    {{^isListContainer}}
+                        if ({{paramName}} !== undefined) {
+                            formParams.set('{{baseName}}', <any>{{paramName}});
+                        }
+                    {{/isListContainer}}
+                {{/formParams}}
 
-{{/headerParams}}
-        // to determine the Content-Type header
-        let consumes: string[] = [
-            {{#consumes}}
-            '{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}
-            {{/consumes}}
-        ];
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            observer.next(xhr.response);
+                            observer.complete();
+                        } else {
+                            observer.error(xhr.response);
+                        }
+                    }
+                };
 
-        // to determine the Accept header
-        let produces: string[] = [
-            {{#produces}}
-            '{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}
-            {{/produces}}
-        ];
+                xhr.open('POST', path, true);
 
-{{#authMethods}}
-        // authentication ({{name}}) required
-{{#isApiKey}}
-{{#isKeyInHeader}}
-        if (this.configuration.apiKey) {
-            headers.set('{{keyParamName}}', this.configuration.apiKey);
-        }
+                {{#headerParams}}
+                        {{#isListContainer}}
+                            if ({{paramName}}) {
+                                xhr.setRequestHeader('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                            }
+                        {{/isListContainer}}
+                        {{^isListContainer}}
+                            xhr.setRequestHeader('{{baseName}}', String({{paramName}}));
+                        {{/isListContainer}}
 
-{{/isKeyInHeader}}
-{{#isKeyInQuery}}
-        if (this.configuration.apiKey) {
-            queryParameters.set('{{keyParamName}}', this.configuration.apiKey);
-        }
+                {{/headerParams}}
 
-{{/isKeyInQuery}}
-{{/isApiKey}}
-{{#isBasic}}
-        // http basic authentication required
-        if (this.configuration.username || this.configuration.password) {
-            headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
+                {{#authMethods}}
+                    // authentication ({{name}}) required
+                    {{#isApiKey}}
+                        {{#isKeyInHeader}}
+                            if (this.configuration.apiKey) {
+                                xhr.setRequestHeader('{{keyParamName}}', this.configuration.apiKey);
+                            }
+                        {{/isKeyInHeader}}
+                        {{#isKeyInQuery}}
 
-{{/isBasic}}
-{{#isOAuth}}
-        // oauth required
-        if (this.configuration.accessToken) {
-            let accessToken = typeof this.configuration.accessToken === 'function'
-                ? this.configuration.accessToken()
-                : this.configuration.accessToken;
-            headers.set('Authorization', 'Bearer ' + accessToken);
-        }
+                        {{/isKeyInQuery}}
+                    {{/isApiKey}}
+                    {{#isBasic}}
+                        // http basic authentication required
+                        if (this.configuration.username || this.configuration.password) {
+                            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+                        }
+                    {{/isBasic}}
+                    {{#isOAuth}}
+                        // oauth required
+                        if (this.configuration.accessToken) {
+                            let accessToken = typeof this.configuration.accessToken === 'function'
+                                ? this.configuration.accessToken()
+                                : this.configuration.accessToken;
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                        }
+                    {{/isOAuth}}
+                {{/authMethods}}
 
-{{/isOAuth}}
-{{/authMethods}}
-{{#hasFormParams}}
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
+                let queryParameters = new URLSearchParams();
+                {{#queryParams}}
+                    {{#isListContainer}}
+                        if ({{paramName}}) {
+                        {{#isCollectionFormatMulti}}
+                            {{paramName}}.forEach((element) => {
+                                queryParameters.append('{{baseName}}', <any>element);
+                            })
+                        {{/isCollectionFormatMulti}}
+                        {{^isCollectionFormatMulti}}
+                            queryParameters.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                        {{/isCollectionFormatMulti}}
+                        }
+                    {{/isListContainer}}
+                    {{^isListContainer}}
+                        if ({{paramName}} !== undefined) {
+                            {{#isDateTime}}
+                                queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
+                            {{/isDateTime}}
+                            {{^isDateTime}}
+                                {{#isDate}}
+                                    queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
+                                {{/isDate}}
+                                {{^isDate}}
+                                    queryParameters.set('{{baseName}}', <any>{{paramName}});
+                                {{/isDate}}
+                            {{/isDateTime}}
+                        }
+                    {{/isListContainer}}
+                    path = path + '?' + queryParameters.toString();
+                {{/queryParams}}
 
-{{/hasFormParams}}
-{{#bodyParam}}
-        headers.set('Content-Type', 'application/json');
+                xhr.send(formParams);
+            });
+        {{/hasFormParams}}
 
-{{/bodyParam}}
-{{#formParams}}
-        {{#isListContainer}}
-        if ({{paramName}}) {
-        {{#isCollectionFormatMulti}}
-            {{paramName}}.forEach((element) => {
-                formParams.append('{{baseName}}', <any>element);
-            })
-        {{/isCollectionFormatMulti}}
-        {{^isCollectionFormatMulti}}
-            formParams.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
-        {{/isCollectionFormatMulti}}
-        }
-        {{/isListContainer}}
-        {{^isListContainer}}
-        if ({{paramName}} !== undefined) {
-            formParams.set('{{baseName}}', <any>{{paramName}});
-        }
-        {{/isListContainer}}
+        {{^hasFormParams}}
 
-{{/formParams}}
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: {{httpMethod}},
-            headers: headers,
-{{#bodyParam}}
-            body: {{paramName}} == null ? '' : JSON.stringify({{paramName}}), // https://github.com/angular/angular/issues/10612
-{{/bodyParam}}
-{{#hasFormParams}}
-            body: formParams.toString(),
-{{/hasFormParams}}
-            search: queryParameters
-        });
+            let queryParameters = new URLSearchParams();
+            let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
 
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
-        }
+            {{#queryParams}}
+                {{#isListContainer}}
+                    if ({{paramName}}) {
+                    {{#isCollectionFormatMulti}}
+                        {{paramName}}.forEach((element) => {
+                            queryParameters.append('{{baseName}}', <any>element);
+                        })
+                    {{/isCollectionFormatMulti}}
+                    {{^isCollectionFormatMulti}}
+                        queryParameters.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                    {{/isCollectionFormatMulti}}
+                    }
+                {{/isListContainer}}
+                {{^isListContainer}}
+                    if ({{paramName}} !== undefined) {
+                        {{#isDateTime}}
+                            queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
+                        {{/isDateTime}}
+                        {{^isDateTime}}
+                            {{#isDate}}
+                                queryParameters.set('{{baseName}}', <any>{{paramName}}.toISOString());
+                            {{/isDate}}
+                            {{^isDate}}
+                                queryParameters.set('{{baseName}}', <any>{{paramName}});
+                            {{/isDate}}
+                        {{/isDateTime}}
+                    }
+                {{/isListContainer}}
+            {{/queryParams}}
 
-        return this.http.request(path, requestOptions);
+            {{#headerParams}}
+                {{#isListContainer}}
+                    if ({{paramName}}) {
+                        headers.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                    }
+                {{/isListContainer}}
+                {{^isListContainer}}
+                    headers.set('{{baseName}}', String({{paramName}}));
+                {{/isListContainer}}
+            {{/headerParams}}
+
+            // to determine the Content-Type header
+            let consumes: string[] = [
+                {{#consumes}}
+                '{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}
+                {{/consumes}}
+            ];
+
+            // to determine the Accept header
+            let produces: string[] = [
+                {{#produces}}
+                '{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}
+                {{/produces}}
+            ];
+
+            {{#authMethods}}
+                // authentication ({{name}}) required
+                {{#isApiKey}}
+                    {{#isKeyInHeader}}
+                        if (this.configuration.apiKey) {
+                            headers.set('{{keyParamName}}', this.configuration.apiKey);
+                        }
+                    {{/isKeyInHeader}}
+                    {{#isKeyInQuery}}
+                        if (this.configuration.apiKey) {
+                            queryParameters.set('{{keyParamName}}', this.configuration.apiKey);
+                        }
+                    {{/isKeyInQuery}}
+                {{/isApiKey}}
+                {{#isBasic}}
+                    // http basic authentication required
+                    if (this.configuration.username || this.configuration.password) {
+                        headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+                    }
+                {{/isBasic}}
+                {{#isOAuth}}
+                    // oauth required
+                    if (this.configuration.accessToken) {
+                        let accessToken = typeof this.configuration.accessToken === 'function'
+                            ? this.configuration.accessToken()
+                            : this.configuration.accessToken;
+                        headers.set('Authorization', 'Bearer ' + accessToken);
+                    }
+                {{/isOAuth}}
+            {{/authMethods}}
+
+            {{#bodyParam}}
+                headers.set('Content-Type', 'application/json');
+            {{/bodyParam}}
+
+            let requestOptions: RequestOptionsArgs = new RequestOptions({
+                method: {{httpMethod}},
+                headers: headers,
+                {{#bodyParam}}
+                body: {{paramName}} == null ? '' : JSON.stringify({{paramName}}), // https://github.com/angular/angular/issues/10612
+                {{/bodyParam}}
+                search: queryParameters
+            });
+
+            // https://github.com/swagger-api/swagger-codegen/issues/4037
+            if (extraHttpRequestParams) {
+                requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+            }
+
+            return this.http.request(path, requestOptions);
+
+        {{/hasFormParams}}
     }
-
 {{/operation}}
 }
 {{/operations}}

@@ -82,13 +82,13 @@ export class {{classname}} {
                             })
                         {{/isCollectionFormatMulti}}
                         {{^isCollectionFormatMulti}}
-                            formParams.set('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+                            formParams.append('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
                         {{/isCollectionFormatMulti}}
                         }
                     {{/isListContainer}}
                     {{^isListContainer}}
                         if ({{paramName}} !== undefined) {
-                            formParams.set('{{baseName}}', <any>{{paramName}});
+                            formParams.append('{{baseName}}', <any>{{paramName}});
                         }
                     {{/isListContainer}}
                 {{/formParams}}

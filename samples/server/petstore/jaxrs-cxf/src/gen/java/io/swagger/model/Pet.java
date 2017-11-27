@@ -14,18 +14,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Pet  {
   
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Long id = null;
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Category category = null;
   @ApiModelProperty(example = "doggie", required = true, value = "")
   private String name = null;
-  @ApiModelProperty(example = "null", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
   private List<String> photoUrls = new ArrayList<String>();
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private List<Tag> tags = new ArrayList<Tag>();
 
 @XmlType(name="StatusEnum")
@@ -60,13 +61,17 @@ public enum StatusEnum {
     }
 }
 
-  @ApiModelProperty(example = "null", value = "pet status in the store")
+  @ApiModelProperty(value = "pet status in the store")
+ /**
+   * pet status in the store  
+  **/
   private StatusEnum status = null;
 
  /**
    * Get id
    * @return id
   **/
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -84,6 +89,7 @@ public enum StatusEnum {
    * Get category
    * @return category
   **/
+  @JsonProperty("category")
   public Category getCategory() {
     return category;
   }
@@ -101,6 +107,7 @@ public enum StatusEnum {
    * Get name
    * @return name
   **/
+  @JsonProperty("name")
   @NotNull
   public String getName() {
     return name;
@@ -119,6 +126,7 @@ public enum StatusEnum {
    * Get photoUrls
    * @return photoUrls
   **/
+  @JsonProperty("photoUrls")
   @NotNull
   public List<String> getPhotoUrls() {
     return photoUrls;
@@ -142,6 +150,7 @@ public enum StatusEnum {
    * Get tags
    * @return tags
   **/
+  @JsonProperty("tags")
   public List<Tag> getTags() {
     return tags;
   }
@@ -164,8 +173,12 @@ public enum StatusEnum {
    * pet status in the store
    * @return status
   **/
-  public StatusEnum getStatus() {
-    return status;
+  @JsonProperty("status")
+  public String getStatus() {
+    if (status == null) {
+      return null;
+    }
+    return status.value();
   }
 
   public void setStatus(StatusEnum status) {
@@ -197,7 +210,7 @@ public enum StatusEnum {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

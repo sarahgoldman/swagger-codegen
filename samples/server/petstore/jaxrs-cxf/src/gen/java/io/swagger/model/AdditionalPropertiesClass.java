@@ -13,18 +13,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AdditionalPropertiesClass  {
   
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Map<String, String> mapProperty = new HashMap<String, String>();
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Map<String, Map<String, String>> mapOfMapProperty = new HashMap<String, Map<String, String>>();
 
  /**
    * Get mapProperty
    * @return mapProperty
   **/
+  @JsonProperty("map_property")
   public Map<String, String> getMapProperty() {
     return mapProperty;
   }
@@ -47,6 +49,7 @@ public class AdditionalPropertiesClass  {
    * Get mapOfMapProperty
    * @return mapOfMapProperty
   **/
+  @JsonProperty("map_of_map_property")
   public Map<String, Map<String, String>> getMapOfMapProperty() {
     return mapOfMapProperty;
   }
@@ -81,7 +84,7 @@ public class AdditionalPropertiesClass  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

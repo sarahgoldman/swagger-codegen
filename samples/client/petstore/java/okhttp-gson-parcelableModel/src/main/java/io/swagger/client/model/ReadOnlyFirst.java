@@ -14,9 +14,14 @@
 package io.swagger.client.model;
 
 import java.util.Objects;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.IOException;
 import android.os.Parcelable;
 import android.os.Parcel;
 
@@ -35,7 +40,7 @@ public class ReadOnlyFirst implements Parcelable {
    * Get bar
    * @return bar
   **/
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   public String getBar() {
     return bar;
   }
@@ -49,7 +54,7 @@ public class ReadOnlyFirst implements Parcelable {
    * Get baz
    * @return baz
   **/
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   public String getBaz() {
     return baz;
   }
@@ -99,7 +104,7 @@ public class ReadOnlyFirst implements Parcelable {
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
+
   public void writeToParcel(Parcel out, int flags) {
      
     out.writeValue(bar);
@@ -116,7 +121,7 @@ public class ReadOnlyFirst implements Parcelable {
     bar = (String)in.readValue(null);
     baz = (String)in.readValue(null);
   }
-  
+
   public int describeContents() {
     return 0;
   }

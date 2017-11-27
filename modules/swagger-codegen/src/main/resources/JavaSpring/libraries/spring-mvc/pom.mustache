@@ -11,7 +11,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.1.0</version>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -25,19 +25,6 @@
                     </execution>
                 </executions>
             </plugin>
-		    <plugin>
-		      <groupId>org.apache.maven.plugins</groupId>
-		      <artifactId>maven-source-plugin</artifactId>
-		      <executions>
-		        <execution>
-		          <id>attach-sources</id>
-		          <goals>
-		            <goal>jar</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		    </plugin>
-            {{#useJetty}}
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -75,7 +62,6 @@
                     </execution>
                 </executions>
             </plugin>
-            {{/useJetty}}
         </plugins>
     </build>
     <dependencies>
@@ -107,32 +93,52 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox-version}</version>
         </dependency>
+        {{#withXml}}
 
+        <!-- XML processing: Jackson -->
+        <dependency>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+          <version>${jackson-version}</version>
+        </dependency>
+
+        {{/withXml}}
         {{#java8}}
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson-version}</version>
         </dependency>
         {{/java8}}
-        {{^java8}}
+        {{#joda}}
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
             <version>${jackson-version}</version>
         </dependency>
+        {{/joda}}
+        {{#threetenbp}}
+
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.4</version>
+            <groupId>com.github.joschi.jackson</groupId>
+            <artifactId>jackson-datatype-threetenbp</artifactId>
+            <version>${jackson-threetenbp-version}</version>
         </dependency>
-        {{/java8}}
+        {{/threetenbp}}
 
         <dependency>
             <groupId>junit</groupId>
@@ -140,12 +146,11 @@
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>${servlet-api-version}</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api-version}</version>
+        </dependency>
 {{#useBeanValidation}}
     <!-- Bean Validation API support -->
     <dependency>
@@ -154,51 +159,8 @@
         <version>1.1.0.Final</version>
         <scope>provided</scope>
     </dependency>
-{{/useBeanValidation}}        
+{{/useBeanValidation}}
     </dependencies>
-    
-    <distributionManagement>
-    {{#releaseDistRepoUrl}}
-        <repository>
-            <id>deployment</id>
-            <name>Internal Releases</name>
-            <url>{{releaseDistRepoUrl}}</url>
-        </repository>
-    {{/releaseDistRepoUrl}}
-        
-    {{#snapshotDistRepoUrl}}
-        <snapshotRepository>
-            <id>deployment</id>
-            <name>Internal Snapshots</name>
-            <url>{{snapshotDistRepoUrl}}</url>
-        </snapshotRepository>
-    {{/snapshotDistRepoUrl}}
-    </distributionManagement>
-    
-    {{#repoUrl}}
-    <repositories>
-	    <repository>
-  	        <id>nextgen</id>
-	        <url>{{repoUrl}}</url>
-	        <snapshots>
-	            <enabled>true</enabled>
-	        </snapshots>
-	    </repository>
-    </repositories>
-    {{/repoUrl}}
-
-	{{#plugInRepoUrl}}
-    <pluginRepositories>
-    	<pluginRepository>
-	      	<id>timsr</id>
-	      	<url>{{plugInRepoUrl}}</url>
-	      	<snapshots>
-	        	<enabled>true</enabled>
-	      	</snapshots>
-    	</pluginRepository>
-    </pluginRepositories>
-    {{/plugInRepoUrl}}
-
     <properties>
         <java.version>{{#java8}}1.8{{/java8}}{{^java8}}1.7{{/java8}}</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -206,9 +168,10 @@
         <jetty-version>9.2.15.v20160210</jetty-version>
         <slf4j-version>1.7.25</slf4j-version>
         <junit-version>4.12</junit-version>
-        <servlet-api-version>3.1.0</servlet-api-version>
-        <springfox-version>{{springfoxVersion}}</springfox-version>
-        <jackson-version>{{jacksonVersion}}</jackson-version>
-        <spring-version>{{springVersion}}</spring-version>
+        <servlet-api-version>2.5</servlet-api-version>
+        <springfox-version>2.7.0</springfox-version>
+        <jackson-version>2.8.9</jackson-version>
+        <jackson-threetenbp-version>2.6.4</jackson-threetenbp-version>
+        <spring-version>4.3.9.RELEASE</spring-version>
     </properties>
 </project>

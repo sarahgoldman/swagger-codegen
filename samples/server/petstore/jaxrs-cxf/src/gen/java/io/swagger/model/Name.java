@@ -11,23 +11,28 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+  * Model for testing model name same as property name
+ **/
 @ApiModel(description="Model for testing model name same as property name")
 public class Name  {
   
-  @ApiModelProperty(example = "null", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
   private Integer name = null;
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Integer snakeCase = null;
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private String property = null;
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private Integer _123Number = null;
 
  /**
    * Get name
    * @return name
   **/
+  @JsonProperty("name")
   @NotNull
   public Integer getName() {
     return name;
@@ -46,6 +51,7 @@ public class Name  {
    * Get snakeCase
    * @return snakeCase
   **/
+  @JsonProperty("snake_case")
   public Integer getSnakeCase() {
     return snakeCase;
   }
@@ -55,6 +61,7 @@ public class Name  {
    * Get property
    * @return property
   **/
+  @JsonProperty("property")
   public String getProperty() {
     return property;
   }
@@ -72,6 +79,7 @@ public class Name  {
    * Get _123Number
    * @return _123Number
   **/
+  @JsonProperty("123Number")
   public Integer get123Number() {
     return _123Number;
   }
@@ -95,7 +103,7 @@ public class Name  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

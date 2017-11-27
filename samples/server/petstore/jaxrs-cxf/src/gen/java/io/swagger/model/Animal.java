@@ -12,18 +12,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Animal  {
   
-  @ApiModelProperty(example = "null", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
   private String className = null;
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private String color = "red";
 
  /**
    * Get className
    * @return className
   **/
+  @JsonProperty("className")
   @NotNull
   public String getClassName() {
     return className;
@@ -42,6 +44,7 @@ public class Animal  {
    * Get color
    * @return color
   **/
+  @JsonProperty("color")
   public String getColor() {
     return color;
   }
@@ -71,7 +74,7 @@ public class Animal  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

@@ -11,17 +11,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+  * Model for testing model with \"_class\" property
+ **/
 @ApiModel(description="Model for testing model with \"_class\" property")
 public class ClassModel  {
   
-  @ApiModelProperty(example = "null", value = "")
+  @ApiModelProperty(value = "")
   private String propertyClass = null;
 
  /**
    * Get propertyClass
    * @return propertyClass
   **/
+  @JsonProperty("_class")
   public String getPropertyClass() {
     return propertyClass;
   }
@@ -50,7 +55,7 @@ public class ClassModel  {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

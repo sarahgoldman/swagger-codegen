@@ -25,6 +25,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            {{#useJetty}}
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -62,6 +64,7 @@
                     </execution>
                 </executions>
             </plugin>
+            {{/useJetty}}
         </plugins>
     </build>
     <dependencies>
@@ -148,7 +151,7 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${servlet-api-version}</version>
         </dependency>
 {{#useBeanValidation}}
@@ -161,6 +164,49 @@
     </dependency>
 {{/useBeanValidation}}
     </dependencies>
+    
+    <distributionManagement>
+    {{#releaseDistRepoUrl}}
+        <repository>
+            <id>deployment</id>
+            <name>Internal Releases</name>
+            <url>{{releaseDistRepoUrl}}</url>
+        </repository>
+    {{/releaseDistRepoUrl}}
+        
+    {{#snapshotDistRepoUrl}}
+        <snapshotRepository>
+            <id>deployment</id>
+            <name>Internal Snapshots</name>
+            <url>{{snapshotDistRepoUrl}}</url>
+        </snapshotRepository>
+    {{/snapshotDistRepoUrl}}
+    </distributionManagement>
+    
+    {{#repoUrl}}
+    <repositories>
+	    <repository>
+  	        <id>nextgen</id>
+	        <url>{{repoUrl}}</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+    </repositories>
+    {{/repoUrl}}
+
+	{{#plugInRepoUrl}}
+    <pluginRepositories>
+    	<pluginRepository>
+	      	<id>timsr</id>
+	      	<url>{{plugInRepoUrl}}</url>
+	      	<snapshots>
+	        	<enabled>true</enabled>
+	      	</snapshots>
+    	</pluginRepository>
+    </pluginRepositories>
+    {{/plugInRepoUrl}}
+
     <properties>
         <java.version>{{#java8}}1.8{{/java8}}{{^java8}}1.7{{/java8}}</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -168,10 +214,10 @@
         <jetty-version>9.2.15.v20160210</jetty-version>
         <slf4j-version>1.7.25</slf4j-version>
         <junit-version>4.12</junit-version>
-        <servlet-api-version>2.5</servlet-api-version>
-        <springfox-version>2.7.0</springfox-version>
-        <jackson-version>2.8.9</jackson-version>
+        <servlet-api-version>3.1.0</servlet-api-version>
+        <springfox-version>{{springfoxVersion}}</springfox-version>
+        <jackson-version>{{jacksonVersion}}</jackson-version>
         <jackson-threetenbp-version>2.6.4</jackson-threetenbp-version>
-        <spring-version>4.3.9.RELEASE</spring-version>
+        <spring-version>{{springVersion}}</spring-version>
     </properties>
 </project>

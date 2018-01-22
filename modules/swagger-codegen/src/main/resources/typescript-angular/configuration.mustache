@@ -76,4 +76,21 @@ export class Configuration {
         const jsonMime: RegExp = new RegExp('^(application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(;.*)?$', 'i');
         return mime != null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
     }
+	
+    /**
+     * Builds the accept header to use for a request.
+     * @param {string[]} accepts - the array of accept types that are available for selection.
+     * @returns {string} the concatenated cancatenated accept header string.
+     */
+	public getAcceptHeader(accepts: string[]): string | undefined{
+        if (accepts.length == 0) {
+            return undefined;
+        }
+
+        if (accepts.length == 1) {
+            return accepts[0];
+        }
+        
+        return accepts.join(", ");
+    }	
 }

@@ -213,7 +213,9 @@ export class {{classname}} {
             '{{{mediaType}}}'{{#hasMore}},{{/hasMore}}
             {{/produces}}
         ];
-        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.getAcceptHeader(httpHeaderAccepts);
+		
         if (httpHeaderAcceptSelected != undefined) {
 {{^useHttpClient}}
             headers.set("Accept", httpHeaderAcceptSelected);

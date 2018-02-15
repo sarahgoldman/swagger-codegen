@@ -66,6 +66,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
     protected String basePackage = "io.swagger";
     protected boolean interfaceOnly = false;
     protected boolean delegatePattern = false;
+    protected boolean delegateMethod = false;
     protected boolean singleContentTypes = false;
     protected boolean java8 = false;
     protected boolean async = false;
@@ -499,8 +500,14 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
         }
 
         if (this.interfaceOnly && this.delegatePattern) {
-            throw new IllegalArgumentException(String.format("Can not generate code with `%s` and `%s` both true.",
-                    DELEGATE_PATTERN, INTERFACE_ONLY));
+            if (this.java8) {
+                this.delegateMethod = true;
+                additionalProperties.put("delegate-method", true);
+            } else {
+                throw new IllegalArgumentException(
+                        String.format("Can not generate code with `%s` and `%s` true while `%s` is false.",
+                                DELEGATE_PATTERN, INTERFACE_ONLY, JAVA_8));
+            }
         }
 
         if (!this.interfaceOnly) {
@@ -583,11 +590,12 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             }
         }
 
-        if (!this.delegatePattern && this.java8) {
+        if ((!this.delegatePattern && this.java8) || this.delegateMethod) {
             additionalProperties.put("jdk8-no-delegate", true);
         }
 
-        if (this.delegatePattern) {
+
+        if (this.delegatePattern && !this.delegateMethod) {
             additionalProperties.put("isDelegate", "true");
             apiTemplateFiles.put("apiDelegate.mustache", "Delegate.java");
         }
@@ -598,10 +606,6 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             if (this.async) {
                 additionalProperties.put(RESPONSE_WRAPPER, "CompletableFuture");
             }
-            typeMapping.put("date", "LocalDate");
-            typeMapping.put("DateTime", "OffsetDateTime");
-            importMapping.put("LocalDate", "java.time.LocalDate");
-            importMapping.put("OffsetDateTime", "java.time.OffsetDateTime");
         } else if (this.async) {
             additionalProperties.put(RESPONSE_WRAPPER, "Callable");
         }
